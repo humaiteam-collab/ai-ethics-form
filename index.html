@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitleTag">เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Taviraj:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c4a40; --navy-light:#2c5f52; --navy-pale:#e5efe9;
+    --gold:#b3822f; --gold-pale:#f3e7d0;
+    --paper:#f6f4ee; --card:#ffffff; --border:#dcd6c8;
+    --text:#232a2e; --text-soft:#5c6670;
+    --green:#2f7a53; --green-bg:#e5f3ea;
+    --amber:#a9741e; --amber-bg:#faf0da;
+    --red:#b3403a; --red-bg:#fbe8e6;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--text);
+    font-family:'Sarabun',sans-serif; font-size:16px; line-height:1.65;
+    padding-bottom:80px;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px;}
+  header.top{background:var(--navy); color:#fff; padding:38px 0 30px;}
+  header.top h1{
+    font-family:'Taviraj',serif; font-weight:600; font-size:1.75rem;
+    margin:0 0 6px; line-height:1.35;
+  }
+  header.top .sub{font-size:1.0rem; opacity:.85; margin:0 0 4px;}
+  header.top .ver{
+    display:inline-block; margin-top:10px; font-size:.85rem;
+    background:rgba(255,255,255,.12); padding:4px 12px; border-radius:999px;
+  }
+  .toolbar{
+    position:sticky; top:0; z-index:50; background:#fff;
+    border-bottom:1px solid var(--border); box-shadow:0 2px 8px rgba(0,0,0,.05);
+  }
+  .toolbar .wrap{display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 20px;}
+  .btn{
+    font-family:'Sarabun',sans-serif; font-size:.92rem; font-weight:600;
+    border:1px solid var(--navy); background:#fff; color:var(--navy);
+    padding:8px 16px; border-radius:8px; cursor:pointer; transition:.15s;
+  }
+  .btn:hover{background:var(--navy-pale);}
+  .btn.primary{background:var(--navy); color:#fff;}
+  .btn.primary:hover{background:var(--navy-light);}
+  .btn.small{padding:5px 11px; font-size:.82rem;}
+  .btn.danger-outline{border-color:var(--red); color:var(--red);}
+  .btn.danger-outline:hover{background:var(--red-bg);}
+  input[type=file]{display:none;}
+
+  .lang-switch{
+    margin-left:auto; display:flex; border:1px solid var(--navy); border-radius:999px; overflow:hidden;
+  }
+  .lang-switch button{
+    font-family:'Sarabun',sans-serif; font-weight:700; font-size:.85rem; padding:7px 16px;
+    border:none; background:#fff; color:var(--navy); cursor:pointer;
+  }
+  .lang-switch button.active{background:var(--navy); color:#fff;}
+
+  section.block{margin:34px 0;}
+  .section-head{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:14px;
+    border-bottom:2px solid var(--navy); padding-bottom:8px;
+  }
+  .section-head .num{
+    font-family:'Taviraj',serif; font-weight:600; font-size:1.5rem; color:var(--gold);
+  }
+  .section-head h2{font-size:1.2rem; margin:0; color:var(--navy);}
+  .hint{color:var(--text-soft); font-size:.88rem; font-style:italic; margin:0 0 14px;}
+  .note-box{
+    background:var(--gold-pale); border:1px solid #e2cd9c; border-radius:var(--radius);
+    padding:14px 18px; font-size:.92rem; margin:14px 0;
+  }
+  .instructions{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 22px; font-size:.95rem; color:var(--text-soft);
+  }
+
+  table.overview{width:100%; border-collapse:collapse; font-size:.9rem; margin-top:10px;}
+  table.overview th, table.overview td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  table.overview th{background:var(--navy-pale); color:var(--navy);}
+
+  details.ref{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px 20px; margin-top:16px;
+  }
+  details.ref summary{cursor:pointer; font-weight:600; color:var(--navy);}
+  table.master{width:100%; border-collapse:collapse; font-size:.85rem; margin-top:12px;}
+  table.master th, table.master td{border:1px solid var(--border); padding:6px 9px; text-align:left;}
+  table.master th{background:var(--navy-pale); color:var(--navy);}
+  .tag-scored{background:var(--green-bg);}
+  .tag-flag{background:var(--red-bg);}
+  .tag-none{background:#f1f0eb;}
+  .legend-line{font-size:.82rem; margin-top:8px; color:var(--text-soft);}
+  .swatch{display:inline-block; padding:1px 8px; border-radius:4px; font-weight:600;}
+
+  .field-grid{display:flex; flex-wrap:wrap; gap:14px 20px;}
+  .field-grid > div{flex:1 1 260px;}
+  .field-grid .full{flex:1 1 100%;}
+  label.field-label{display:block; font-weight:600; font-size:.9rem; margin-bottom:4px; color:var(--navy);}
+  input[type=text], input[type=date], input[type=number], textarea, select{
+    width:100%; font-family:'Sarabun',sans-serif; font-size:.95rem;
+    padding:9px 11px; border:1px solid var(--border); border-radius:8px; background:#fff; color:var(--text);
+  }
+  textarea{resize:vertical; min-height:56px;}
+  input:focus, textarea:focus, select:focus{outline:2px solid var(--gold); outline-offset:1px;}
+
+  .radio-row{display:flex; gap:22px; flex-wrap:wrap; padding:6px 0;}
+  .radio-row label{font-size:.95rem; display:flex; align-items:center; gap:6px; cursor:pointer;}
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px 22px; margin-bottom:18px; box-shadow:0 1px 4px rgba(0,0,0,.04);
+  }
+  .entry-card{border-left:5px solid var(--gold);}
+  .entry-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+  .entry-head .title{font-weight:700; color:var(--navy); font-size:1.05rem;}
+  .q-label{font-weight:600; font-size:.95rem; margin:16px 0 6px; color:var(--navy);}
+  .q-hint{font-weight:400; font-style:italic; color:var(--text-soft); font-size:.82rem;}
+  .opt{display:flex; align-items:flex-start; gap:8px; padding:4px 0; font-size:.92rem;}
+  .opt input{margin-top:4px; flex-shrink:0;}
+  .opt .code{font-weight:700; color:var(--navy); margin-right:2px;}
+  .opt .note{color:var(--text-soft); font-size:.85rem;}
+  .score-chip{
+    display:inline-block; background:var(--green-bg); color:var(--green); font-weight:700;
+    font-size:.78rem; padding:1px 7px; border-radius:999px; margin-left:6px;
+  }
+  .empty-state{
+    text-align:center; padding:30px 10px; color:var(--text-soft); font-size:.92rem;
+    border:1.5px dashed var(--border); border-radius:var(--radius);
+  }
+
+  .summary-grid{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:18px;}
+  .stat{flex:1 1 180px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center;}
+  .stat .val{font-family:'Taviraj',serif; font-size:1.7rem; font-weight:600; color:var(--navy);}
+  .stat .lbl{font-size:.78rem; color:var(--text-soft); margin-top:2px;}
+  .formula-box{
+    background:var(--navy-pale); border-radius:var(--radius); padding:16px 20px; font-size:.92rem; margin:14px 0;
+  }
+  .formula-box code{font-size:.96rem;}
+  .gauge-wrap{margin:20px 0;}
+  .gauge-track{
+    position:relative; height:26px; background:#eae7dd; border-radius:999px; overflow:hidden; border:1px solid var(--border);
+  }
+  .gauge-fill{height:100%; width:0%; background:var(--text-soft); transition:width .35s ease, background .35s ease;}
+  .gauge-threshold{
+    position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--navy); left:40%;
+  }
+  .gauge-threshold::after{
+    content:attr(data-label); position:absolute; top:-20px; left:50%; transform:translateX(-50%);
+    font-size:.72rem; color:var(--navy); white-space:nowrap;
+  }
+  .result-badge{
+    display:inline-block; margin-top:14px; padding:8px 16px; border-radius:8px; font-weight:700; font-size:.95rem;
+  }
+  .result-badge.ok{background:var(--green-bg); color:var(--green);}
+  .result-badge.warn{background:var(--amber-bg); color:var(--amber);}
+  .result-badge.danger{background:var(--red-bg); color:var(--red);}
+  .result-badge.neutral{background:#eee; color:var(--text-soft);}
+  .threshold-row{display:flex; align-items:center; gap:10px; margin:10px 0; font-size:.92rem; flex-wrap:wrap;}
+  .threshold-row input{width:80px;}
+
+  .cert-item{display:flex; gap:9px; padding:7px 0; font-size:.92rem; align-items:flex-start; border-bottom:1px dashed var(--border);}
+  .cert-item:last-child{border-bottom:none;}
+  .cert-item input{margin-top:3px; flex-shrink:0;}
+
+  .sig-row{display:flex; gap:14px; margin-bottom:16px; align-items:end; flex-wrap:wrap;}
+  .sig-row > div:first-child{flex:2 1 260px;}
+  .sig-row > div:last-child{flex:1 1 140px;}
+
+  footer{text-align:center; color:var(--text-soft); font-size:.82rem; padding:30px 0;}
+
+  .device-notice{
+    position:relative; background:var(--amber-bg); color:#7a5414; border-bottom:2px solid var(--amber);
+    padding:16px 46px 16px 20px; font-size:.88rem; line-height:1.6; text-align:center;
+  }
+  .device-notice strong{display:block; margin-bottom:6px; font-size:.95rem;}
+  .device-notice-close{
+    position:absolute; top:10px; right:14px; width:28px; height:28px; border-radius:50%;
+    border:1px solid #7a5414; background:transparent; color:#7a5414; font-size:1.1rem; line-height:1;
+    cursor:pointer;
+  }
+  .device-notice-close:hover{background:rgba(122,84,20,.12);}
+
+  #printWatermark{display:none;}
+
+  @media (max-width:640px){
+    .field-grid > div{flex:1 1 100%;}
+    .stat{flex:1 1 45%;}
+  }
+
+  @media print{
+    .toolbar, .btn, #addEntryBtn, .no-print{display:none !important;}
+    header.top{background:#fff !important; color:#000 !important; padding:10px 0;}
+    header.top .ver{background:none; border:1px solid #000; color:#000;}
+    body{background:#fff;}
+    .card{box-shadow:none; border:1px solid #999;}
+    #printWatermark{
+      display:block; position:fixed; top:50%; left:50%;
+      transform:translate(-50%,-50%); width:52%; max-width:460px;
+      opacity:.09; z-index:9999; pointer-events:none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<img id="printWatermark" src="data:image/png;base64,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" alt="">
+
+<div class="device-notice no-print" id="deviceNotice">
+  <button type="button" class="device-notice-close" id="deviceNoticeClose" aria-label="ปิด / Close">×</button>
+  <strong>แนะนำให้ทำในคอมพิวเตอร์ / Recommended: use a computer</strong><br>
+  หน้านี้ต้องใช้ JavaScript สำหรับการคำนวณ % อัตโนมัติ การเพิ่มชุดบันทึก การสลับภาษา และปุ่มต่าง ๆ
+  เพื่อประสบการณ์ใช้งานที่สมบูรณ์ที่สุด แนะนำให้เปิดและกรอกแบบฟอร์มนี้บนคอมพิวเตอร์
+  หากเปิดผ่านเบราว์เซอร์ในแอปอื่น (เช่น Facebook, LINE, Instagram) แล้วปุ่ม/การคำนวณไม่ทำงาน
+  โปรดกด “เปิดใน Safari” หรือ “เปิดในเบราว์เซอร์” แล้วเปิดไฟล์นี้อีกครั้งโดยตรงในแอปเบราว์เซอร์ปกติ<br><br>
+  This page needs JavaScript for auto-calculation, adding entries, language switching, and buttons to work.
+  For the most complete experience, we recommend opening and completing this form on a computer.
+  If buttons don't respond when opened inside another app's browser (Facebook, LINE, Instagram), please choose
+  "Open in Safari/Browser" and reopen this file directly in your regular browser app.
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <h1 data-i18n="h1">เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย</h1>
+    <p class="sub" data-i18n="hsub1">AI Research-Use Ethics Declaration and Verification Instrument</p>
+    <p class="sub" style="font-size:.88rem;" data-i18n="hsub2">สำหรับงานวิจัย วิทยานิพนธ์ ดุษฎีนิพนธ์ บทความวิชาการ และรายงานการค้นคว้าอิสระ ทุกสาขาวิชา</p>
+    <span class="ver" data-i18n="hbadge">ฉบับอิเล็กทรอนิกส์ — คำนวณ % อัตโนมัติ</span>
+  </div>
+</header>
+
+<div class="toolbar no-print">
+  <div class="wrap">
+    <button class="btn primary" id="addEntryBtnTop" data-i18n="btnAddEntry">+ เพิ่มชุดบันทึกการใช้งาน</button>
+    <button class="btn" id="printBtn" data-i18n="btnPrint">พิมพ์ / บันทึกเป็น PDF</button>
+    <div class="lang-switch">
+      <button id="langTh" data-lang="th">ไทย</button>
+      <button id="langEn" data-lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="block">
+    <div class="instructions">
+      <strong data-i18n="instrLabel">คำชี้แจงการใช้เครื่องมือ:</strong> <span data-i18n="instrBody">เครื่องมือนี้ใช้บันทึกและรับรองการใช้เทคโนโลยีปัญญาประดิษฐ์ (AI) ในกระบวนการจัดทำผลงานทางวิชาการ เพื่อสร้างความโปร่งใส ตรวจสอบย้อนกลับได้ และป้องกันการละเมิดจรรยาบรรณทางวิชาการหรือทรัพย์สินทางปัญญา ทุกตัวเลือกมีทั้งรหัสกำกับและคำอธิบายในตัว กรอกได้โดยไม่ต้องเปิดเอกสารอื่นประกอบ ระดับการพึ่งพา AI จะคำนวณเป็นเปอร์เซ็นต์ให้อัตโนมัติในส่วนที่ ๔ เนื่องจากหน้านี้ไม่บันทึกข้อมูลอัตโนมัติ แนะนำให้กรอกให้เสร็จในคราวเดียว หรือกดปุ่ม “พิมพ์ / บันทึกเป็น PDF” เพื่อเก็บสำเนาไว้เป็นระยะ</span>
+    </div>
+
+    <table class="overview" id="overviewTable"><tr><th>ส่วนที่</th><th>ชื่อส่วน</th><th>ใครเป็นผู้กรอก</th><th>วัตถุประสงค์โดยย่อ</th></tr><tr><td>๑</td><td>ข้อมูลทั่วไปของผู้วิจัยและผลงาน</td><td>ผู้วิจัย/ผู้เขียนหลัก</td><td>ระบุตัวตนและขอบเขตของผลงาน</td></tr><tr><td>๒</td><td>คำประกาศเบื้องต้น</td><td>ผู้วิจัย/ผู้เขียนหลัก</td><td>ประกาศว่ามีการใช้ AI หรือไม่</td></tr><tr><td>๓</td><td>ชุดบันทึกการใช้งานปัญญาประดิษฐ์</td><td>ผู้วิจัย/ผู้เขียนหลัก</td><td>กรอก 1 ชุดต่อการใช้ AI 1 ครั้ง</td></tr><tr><td>๔</td><td>สรุปและประเมินความเสี่ยงโดยรวม</td><td>ผู้วิจัย/ผู้เขียนหลัก</td><td>คำนวณ % อัตโนมัติจากทุกชุดบันทึก</td></tr><tr><td>๕</td><td>คำรับรองด้านจริยธรรมและลิขสิทธิ์</td><td>ผู้วิจัย/ผู้เขียนหลัก</td><td>ยืนยันการปฏิบัติตามหลักจริยธรรม</td></tr><tr><td>๖</td><td>การตรวจสอบโดยอาจารย์ที่ปรึกษา/ผู้ตรวจสอบ</td><td>อาจารย์ที่ปรึกษา/บรรณาธิการ</td><td>ตรวจทานและรับรองความเหมาะสม</td></tr><tr><td>๗</td><td>การลงนามรับรอง</td><td>ทุกฝ่ายที่เกี่ยวข้อง</td><td>ยืนยันความถูกต้อง</td></tr></table>
+
+    <details class="ref">
+      <summary data-i18n="refSummary">แสดง/ซ่อนตารางสรุปรหัสและค่าคะแนนทั้งหมด (อ้างอิงด่วน)</summary>
+      <table class="master" id="masterTable"><tr><th>ชุดรหัส</th><th>รหัส</th><th>ความหมายโดยย่อ</th><th>ค่าแทนสำหรับคำนวณ</th></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>A</strong></td><td>ภาษาและการเขียน</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>B</strong></td><td>วิจัยและระดมสมอง</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>C</strong></td><td>แปลภาษา/สืบค้นต้นฉบับ</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>D</strong></td><td>การวิเคราะห์ข้อมูล</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>E</strong></td><td>การอ้างอิงและบรรณานุกรม</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>หมวดการใช้งาน (ไม่มีคะแนน)</td><td><strong>F</strong></td><td>อื่น ๆ</td><td class="tag-none">ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน</td></tr>
+        <tr><td>ระดับขอบเขต (นำไปคำนวณ %)</td><td><strong>L1</strong></td><td>ตรวจสอบ/พิสูจน์อักษรเท่านั้น</td><td class="tag-scored">1 คะแนน</td></tr>
+        <tr><td>ระดับขอบเขต (นำไปคำนวณ %)</td><td><strong>L2</strong></td><td>ปรับสำนวน/เรียบเรียงใหม่</td><td class="tag-scored">2 คะแนน</td></tr>
+        <tr><td>ระดับขอบเขต (นำไปคำนวณ %)</td><td><strong>L3</strong></td><td>ช่วยวางโครงร่าง/แนวทาง</td><td class="tag-scored">3 คะแนน</td></tr>
+        <tr><td>ระดับขอบเขต (นำไปคำนวณ %)</td><td><strong>L4</strong></td><td>ร่างเนื้อหาบางส่วน</td><td class="tag-scored">4 คะแนน</td></tr>
+        <tr><td>ระดับขอบเขต (นำไปคำนวณ %)</td><td><strong>L5</strong></td><td>สร้างเนื้อหาเกือบทั้งหมด</td><td class="tag-scored">5 คะแนน</td></tr>
+        <tr><td>ข้อมูลนำเข้า (นับจำนวนครั้ง)</td><td><strong>I0</strong></td><td>ไม่ได้ป้อนข้อมูลใด</td><td class="tag-none">0 (ไม่นับเป็นความเสี่ยง)</td></tr>
+        <tr><td>ข้อมูลนำเข้า (นับจำนวนครั้ง)</td><td><strong>I1</strong></td><td>ข้อมูลสาธารณะที่อนุญาต</td><td class="tag-none">0 (ไม่นับเป็นความเสี่ยง)</td></tr>
+        <tr><td>ข้อมูลนำเข้า (นับจำนวนครั้ง)</td><td><strong>I2</strong></td><td>ข้อมูลมีลิขสิทธิ์ของผู้อื่น</td><td class="tag-flag">นับ 1 ครั้ง (ความเสี่ยงสูง)</td></tr>
+        <tr><td>ข้อมูลนำเข้า (นับจำนวนครั้ง)</td><td><strong>I3</strong></td><td>ข้อมูลส่วนบุคคล</td><td class="tag-flag">นับ 1 ครั้ง (ความเสี่ยงสูง)</td></tr>
+        <tr><td>ข้อมูลนำเข้า (นับจำนวนครั้ง)</td><td><strong>I4</strong></td><td>ผลงานตนเองยังไม่เผยแพร่</td><td class="tag-flag">นับ 1 ครั้ง (ความเสี่ยงสูง)</td></tr>
+        <tr><td>วิธีตรวจสอบ (นับจำนวนครั้ง)</td><td><strong>V1</strong></td><td>ตรวจกับต้นฉบับปฐมภูมิ</td><td class="tag-none">0 (ตรวจสอบแล้ว ไม่เสี่ยง)</td></tr>
+        <tr><td>วิธีตรวจสอบ (นับจำนวนครั้ง)</td><td><strong>V2</strong></td><td>ตรวจกับฐานข้อมูลวิชาการ</td><td class="tag-none">0 (ตรวจสอบแล้ว ไม่เสี่ยง)</td></tr>
+        <tr><td>วิธีตรวจสอบ (นับจำนวนครั้ง)</td><td><strong>V3</strong></td><td>ให้ผู้เชี่ยวชาญตรวจ</td><td class="tag-none">0 (ตรวจสอบแล้ว ไม่เสี่ยง)</td></tr>
+        <tr><td>วิธีตรวจสอบ (นับจำนวนครั้ง)</td><td><strong>V4</strong></td><td>ยังไม่ได้ตรวจสอบ</td><td class="tag-flag">นับ 1 ครั้ง (เสี่ยงสูง ต้องแก้ไข)</td></tr>
+      </table>
+      <p class="legend-line" id="masterLegend"><span class="swatch tag-scored">สีเขียว</span> = มีค่าแทนเป็นตัวเลข นำไปรวมคำนวณ %   <span class="swatch tag-flag">สีส้ม</span> = ความเสี่ยงสูง นับเป็นจำนวนครั้ง   <span class="swatch tag-none">สีเทา</span> = ไม่มีความเสี่ยงหรือไม่มีค่าแทน</p>
+    </details>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num1">๑</span><h2 data-i18n="s1title">ข้อมูลทั่วไปของผู้วิจัยและผลงาน</h2></div>
+    <div class="card">
+      <div class="field-grid">
+        <div><label class="field-label" data-i18n="gNameLbl">ชื่อ–นามสกุลผู้วิจัย/ผู้เขียนหลัก</label><input type="text" id="gName"></div>
+        <div><label class="field-label" data-i18n="gCoLbl">ผู้เขียนร่วม (ถ้ามี)</label><input type="text" id="gCoAuthors"></div>
+        <div><label class="field-label" data-i18n="gInstLbl">หน่วยงาน/สถาบัน/หลักสูตร</label><input type="text" id="gInstitution"></div>
+        <div><label class="field-label" data-i18n="gTypeLbl">ประเภทผลงาน</label>
+          <select id="gWorkType">
+            <option value="" data-i18n="optChoose">— เลือก —</option>
+            <option value="thesis" data-i18n="optThesis">วิทยานิพนธ์</option>
+            <option value="dissertation" data-i18n="optDissertation">ดุษฎีนิพนธ์</option>
+            <option value="researchArticle" data-i18n="optResearchArticle">บทความวิจัย</option>
+            <option value="academicArticle" data-i18n="optAcademicArticle">บทความวิชาการ</option>
+            <option value="report" data-i18n="optReport">รายงานการค้นคว้าอิสระ</option>
+            <option value="other" data-i18n="optOther">อื่น ๆ</option>
+          </select>
+        </div>
+        <div class="full"><label class="field-label" data-i18n="gTitleLbl">ชื่อผลงาน</label><input type="text" id="gTitle"></div>
+        <div><label class="field-label" data-i18n="gAdvisorLbl">อาจารย์ที่ปรึกษาหลัก/หัวหน้าโครงการ (ถ้ามี)</label><input type="text" id="gAdvisor"></div>
+        <div><label class="field-label" data-i18n="gAdvisor2Lbl">อาจารย์ที่ปรึกษาร่วม (ถ้ามี)</label><input type="text" id="gAdvisor2"></div>
+        <div><label class="field-label" data-i18n="gPeriodLbl">ช่วงเวลาที่จัดทำผลงาน</label><input type="text" id="gPeriod"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num2">๒</span><h2 data-i18n="s2title">คำประกาศเบื้องต้นการใช้เทคโนโลยีปัญญาประดิษฐ์</h2></div>
+    <div class="card">
+      <div class="radio-row">
+        <label><input type="radio" name="decl" value="no" id="declNo"> <span data-i18n="declNoLbl">ไม่ได้ใช้เทคโนโลยีปัญญาประดิษฐ์ในผลงานนี้ (ข้ามไปส่วนที่ ๗)</span></label>
+        <label><input type="radio" name="decl" value="yes" id="declYes" checked> <span data-i18n="declYesLbl">ได้ใช้เทคโนโลยีปัญญาประดิษฐ์ (กรอกส่วนที่ ๓-๖ ให้ครบ)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <div id="aiSections">
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num3">๓</span><h2 data-i18n="s3title">ชุดบันทึกการใช้งานปัญญาประดิษฐ์</h2></div>
+    <p class="hint" data-i18n="s3hint">กรอก 1 ชุดต่อการใช้ AI 1 เครื่องมือ × 1 ลักษณะการใช้งาน × 1 ส่วนของงาน หากใช้ AI หลายตัวในขั้นตอนเดียวกัน หรือใช้ตัวเดียวกันในหลายส่วนที่ลักษณะต่างกัน ให้เพิ่มชุดใหม่แยกกันเสมอ</p>
+    <div id="entriesContainer"><div class="empty-state">ยังไม่มีชุดบันทึก กดปุ่ม “+ เพิ่มชุดบันทึกการใช้งาน” เพื่อเริ่มต้น</div></div>
+    <button class="btn primary no-print" id="addEntryBtn" data-i18n="btnAddEntry">+ เพิ่มชุดบันทึกการใช้งาน</button>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num4">๔</span><h2 data-i18n="s4title">สรุปและประเมินความเสี่ยงโดยรวม</h2></div>
+    <div class="card">
+      <div class="summary-grid">
+        <div class="stat"><div class="val" id="sumEntries">0</div><div class="lbl" data-i18n="statEntries">ชุดบันทึกทั้งหมด</div></div>
+        <div class="stat"><div class="val" id="sumL">0</div><div class="lbl" data-i18n="statSumL">ผลรวมคะแนน L</div></div>
+        <div class="stat"><div class="val" id="highRiskCount">0</div><div class="lbl" data-i18n="statHighRisk">ชุดข้อมูลนำเข้าเสี่ยงสูง</div></div>
+        <div class="stat"><div class="val" id="pendingVerifyCount">0</div><div class="lbl" data-i18n="statPendingV4">ชุดยังไม่ได้ตรวจสอบ (V4)</div></div>
+      </div>
+
+      <div class="formula-box">
+        <strong data-i18n="formulaLabel">สูตร:</strong> <span id="formulaText">ระดับการพึ่งพา AI เฉลี่ย (%) = [ผลรวมคะแนน L ÷ (5 × จำนวนชุดบันทึก)] × 100</span><br>
+        <code id="formulaLine">แทนค่า: [0 ÷ (5 × 0)] × 100 = 0.0%</code>
+      </div>
+
+      <div class="threshold-row">
+        <label for="thresholdInput"><strong data-i18n="thresholdLbl">เกณฑ์ที่ยอมรับได้ (กำหนดเอง):</strong></label>
+        <input type="number" id="thresholdInput" value="40" min="0" max="100"> %
+        <span class="hint" style="margin:0;" data-i18n="thresholdHint">(ตัวอย่างทั่วไปคือไม่เกิน 40% ปรับได้ตามดุลยพินิจของผู้วิจัย/สถาบัน)</span>
+      </div>
+
+      <div class="gauge-wrap">
+        <div class="gauge-track">
+          <div class="gauge-fill" id="gaugeFill"></div>
+          <div class="gauge-threshold" id="gaugeThresholdMark"></div>
+        </div>
+      </div>
+      <div id="percentDisplay" style="font-family:'Taviraj',serif; font-size:1.6rem; font-weight:600; color:var(--navy);">0.0%</div>
+      <div class="result-badge neutral" id="percentResult">ยังไม่มีชุดบันทึก</div>
+
+      <div class="note-box" style="margin-top:18px;" id="ivNote">รหัส I (ข้อมูลนำเข้า) และรหัส V (การตรวจสอบ) ไม่นำมารวมในสูตรคำนวณ % นี้ เนื่องจากเป็นความเสี่ยงเชิงคุณภาพที่ควรพิจารณาเป็นจำนวนครั้ง ไม่ใช่สัดส่วน — หากมีชุดที่ติดรหัสความเสี่ยงสูงหรือยังค้าง V4 แม้เพียงชุดเดียว ควรจัดการให้เรียบร้อยก่อนส่งผลงาน ไม่ว่าค่า % โดยรวมจะต่ำเพียงใดก็ตาม</div>
+
+      <div style="margin-top:18px;">
+        <label class="field-label" data-i18n="overallRiskLbl">ระดับความเสี่ยงโดยรวมของผลงานนี้ (ประเมินตนเอง)</label>
+        <div class="radio-row">
+          <label><input type="radio" name="overallRisk" value="low"> <span data-i18n="riskLow">ต่ำ</span></label>
+          <label><input type="radio" name="overallRisk" value="mid"> <span data-i18n="riskMid">ปานกลาง</span></label>
+          <label><input type="radio" name="overallRisk" value="high"> <span data-i18n="riskHigh">สูง</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num5">๕</span><h2 data-i18n="s5title">คำรับรองด้านจริยธรรมและทรัพย์สินทางปัญญา (ลิขสิทธิ์)</h2></div>
+    <p class="hint" data-i18n="s5hint">ผู้วิจัย/ผู้เขียนพึงทำเครื่องหมายรับรองข้อความทุกข้อต่อไปนี้ ก่อนยื่นเครื่องมือนี้ประกอบการส่งผลงาน</p>
+    <div class="card" id="certList"><label class="cert-item"><input type="checkbox" id="cert0"><span>ข้าพเจ้าได้ตรวจสอบและยืนยันความถูกต้องของการอ้างอิงทุกรายการที่ปัญญาประดิษฐ์แนะนำกับแหล่งข้อมูลปฐมภูมิแล้ว ไม่มีรายการใดเป็นการอ้างอิงที่กุขึ้นหรือคลาดเคลื่อน</span></label><label class="cert-item"><input type="checkbox" id="cert1"><span>ข้าพเจ้ายืนยันว่าเนื้อหาหลัก การตีความ และข้อวินิจฉัยทางวิชาการทั้งหมดในผลงานนี้เป็นผลจากดุลยพินิจของข้าพเจ้าเอง มิใช่การคัดลอกผลลัพธ์จากปัญญาประดิษฐ์มาใช้โดยตรงโดยไม่ผ่านการเรียบเรียงหรือตรวจสอบ</span></label><label class="cert-item"><input type="checkbox" id="cert2"><span>ข้าพเจ้าไม่ได้นำข้อมูลส่วนบุคคล ข้อมูลที่เป็นความลับของผู้ให้ข้อมูล/ผู้เข้าร่วมวิจัย หรือผลงานที่ยังไม่เผยแพร่ เข้าสู่ระบบปัญญาประดิษฐ์สาธารณะโดยไม่ได้รับอนุญาต</span></label><label class="cert-item"><input type="checkbox" id="cert3"><span>ข้าพเจ้าไม่ได้นำผลงานที่มีลิขสิทธิ์ของผู้อื่นป้อนเข้าสู่ปัญญาประดิษฐ์เพื่อผลิตซ้ำหรือดัดแปลงโดยไม่ได้รับอนุญาตจากเจ้าของลิขสิทธิ์ และได้ตรวจสอบเงื่อนไขการใช้งานของเครื่องมือที่ใช้แล้ว</span></label><label class="cert-item"><input type="checkbox" id="cert4"><span>ข้าพเจ้าเข้าใจและยอมรับว่าจะรับผิดชอบแต่เพียงผู้เดียว (หรือร่วมกับผู้เขียนร่วม) ต่อความถูกต้อง ความสมบูรณ์ และการละเมิดทรัพย์สินทางปัญญาใด ๆ ที่อาจเกิดขึ้นจากการใช้ปัญญาประดิษฐ์ในผลงานนี้</span></label><label class="cert-item"><input type="checkbox" id="cert5"><span>ข้าพเจ้าเข้าใจว่าการใช้ปัญญาประดิษฐ์โดยไม่เปิดเผย หรือการใช้นอกขอบเขตที่แจ้งไว้ในเครื่องมือนี้ ถือเป็นการละเมิดจรรยาบรรณทางวิชาการ</span></label><label class="cert-item"><input type="checkbox" id="cert6"><span>ข้าพเจ้าได้อ่านหรือศึกษาเอกสารต้นฉบับจริงก่อนนำมาใช้สนับสนุนงานวิจัย พร้อมทั้งตรวจสอบความถูกต้องของข้อมูลและการอ้างอิงที่ปัญญาประดิษฐ์แนะนำทุกรายการแล้วอย่างรอบคอบ</span></label><label class="cert-item"><input type="checkbox" id="cert7"><span>ข้าพเจ้าไม่มีชุดบันทึกใดในส่วนที่ ๓ ที่ยังกา “ยังไม่ได้ตรวจสอบ” ค้างอยู่โดยไม่มีเหตุผลอันสมควร</span></label><label class="cert-item"><input type="checkbox" id="cert8"><span>(กรณีมีผู้เขียนร่วม) ข้าพเจ้าและผู้เขียนร่วมทุกคนรับทราบและเห็นชอบร่วมกันในการใช้ปัญญาประดิษฐ์ตามที่บันทึกไว้ในเครื่องมือนี้</span></label></div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num6">๖</span><h2 data-i18n="s6title">การตรวจสอบและรับรองโดยอาจารย์ที่ปรึกษา/ผู้ตรวจสอบ</h2></div>
+    <p class="hint" data-i18n="s6hint">สำหรับอาจารย์ที่ปรึกษา หัวหน้าโครงการ หรือบรรณาธิการผู้รับผิดชอบ ทำเครื่องหมายรับรองหลังตรวจทานส่วนที่ ๓ แล้ว</p>
+    <div class="card" id="advisorList"><label class="cert-item"><input type="checkbox" id="adv0"><span>ข้าพเจ้าได้ตรวจสอบชุดบันทึกการใช้ปัญญาประดิษฐ์ในส่วนที่ ๓ แล้ว และเห็นว่าขอบเขตการใช้งานที่ระบุไว้มีความเหมาะสมกับลักษณะของผลงานนี้</span></label><label class="cert-item"><input type="checkbox" id="adv1"><span>ข้าพเจ้าได้สุ่มตรวจสอบความถูกต้องของการอ้างอิงหรือข้อมูลอ้างอิงอย่างน้อยบางส่วนแล้ว</span></label><label class="cert-item"><input type="checkbox" id="adv2"><span>ข้าพเจ้าเห็นว่าเนื้อหาความคิดหลัก การตีความ และข้อวินิจฉัยทางวิชาการยังคงเป็นของผู้วิจัย/ผู้เขียนอย่างแท้จริง มิได้พึ่งพาปัญญาประดิษฐ์เกินขอบเขตที่เหมาะสม</span></label><label class="cert-item"><input type="checkbox" id="adv3"><span>ข้าพเจ้าอนุญาตให้ส่งผลงานนี้ประกอบการพิจารณาต่อไป โดยรับทราบคำประกาศการใช้ปัญญาประดิษฐ์ตามที่ระบุในเครื่องมือนี้ทั้งหมดแล้ว</span></label></div>
+  </section>
+
+  </div><!-- /aiSections -->
+
+  <section class="block">
+    <div class="section-head"><span class="num" data-i18n="num7">๗</span><h2 data-i18n="s7title">การลงนามรับรอง</h2></div>
+    <div class="card">
+      <div class="sig-row">
+        <div><label class="field-label" data-i18n="sigResearcherLbl">ผู้วิจัย/ผู้เขียนหลัก (พิมพ์ชื่อแทนการลงนาม)</label><input type="text" id="sigResearcher"></div>
+        <div><label class="field-label" data-i18n="sigDateLbl">วันที่</label><input type="date" id="sigResearcherDate"></div>
+      </div>
+      <div class="sig-row">
+        <div><label class="field-label" data-i18n="sigCoLbl">ผู้เขียนร่วม (ถ้ามี)</label><input type="text" id="sigCoAuthor"></div>
+        <div><label class="field-label" data-i18n="sigDateLbl">วันที่</label><input type="date" id="sigCoAuthorDate"></div>
+      </div>
+      <div class="sig-row">
+        <div><label class="field-label" data-i18n="sigAdvisorLbl">อาจารย์ที่ปรึกษาหลัก/หัวหน้าโครงการ/ผู้ตรวจสอบ</label><input type="text" id="sigAdvisor"></div>
+        <div><label class="field-label" data-i18n="sigDateLbl">วันที่</label><input type="date" id="sigAdvisorDate"></div>
+      </div>
+      <div class="sig-row">
+        <div><label class="field-label" data-i18n="sigAdvisor2Lbl">อาจารย์ที่ปรึกษาร่วม (ถ้ามี)</label><input type="text" id="sigAdvisor2"></div>
+        <div><label class="field-label" data-i18n="sigDateLbl">วันที่</label><input type="date" id="sigAdvisor2Date"></div>
+      </div>
+      <p class="hint" style="margin-top:10px;" data-i18n="sigNote">เอกสารอิเล็กทรอนิกส์ฉบับนี้ใช้การพิมพ์ชื่อแทนลายมือชื่อ หากหน่วยงานต้องการลายมือชื่อจริง โปรดพิมพ์เอกสารนี้ (ปุ่ม “พิมพ์ / บันทึกเป็น PDF” ด้านบน) แล้วลงนามด้วยตนเอง</p>
+    </div>
+  </section>
+
+  <footer data-i18n="footerText">เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย — ฉบับอิเล็กทรอนิกส์  |  ใช้คู่กับคู่มือการใช้เครื่องมือสำหรับคำอธิบายรหัสและตัวอย่างโดยละเอียด</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var state = { counter: 0, entries: [], lang: "th" };
+
+  // ============== Static UI text ==============
+  var I18N = {
+    th: {
+      h1: "เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย",
+      hsub1: "AI Research-Use Ethics Declaration and Verification Instrument",
+      hsub2: "สำหรับงานวิจัย วิทยานิพนธ์ ดุษฎีนิพนธ์ บทความวิชาการ และรายงานการค้นคว้าอิสระ ทุกสาขาวิชา",
+      hbadge: "ฉบับอิเล็กทรอนิกส์ — คำนวณ % อัตโนมัติ",
+      btnAddEntry: "+ เพิ่มชุดบันทึกการใช้งาน",
+      btnPrint: "พิมพ์ / บันทึกเป็น PDF",
+      instrLabel: "คำชี้แจงการใช้เครื่องมือ:",
+      instrBody: "เครื่องมือนี้ใช้บันทึกและรับรองการใช้เทคโนโลยีปัญญาประดิษฐ์ (AI) ในกระบวนการจัดทำผลงานทางวิชาการ เพื่อสร้างความโปร่งใส ตรวจสอบย้อนกลับได้ และป้องกันการละเมิดจรรยาบรรณทางวิชาการหรือทรัพย์สินทางปัญญา ทุกตัวเลือกมีทั้งรหัสกำกับและคำอธิบายในตัว กรอกได้โดยไม่ต้องเปิดเอกสารอื่นประกอบ ระดับการพึ่งพา AI จะคำนวณเป็นเปอร์เซ็นต์ให้อัตโนมัติในส่วนที่ ๔ เนื่องจากหน้านี้ไม่บันทึกข้อมูลอัตโนมัติ แนะนำให้กรอกให้เสร็จในคราวเดียว หรือกดปุ่ม “พิมพ์ / บันทึกเป็น PDF” เพื่อเก็บสำเนาไว้เป็นระยะ",
+      refSummary: "แสดง/ซ่อนตารางสรุปรหัสและค่าคะแนนทั้งหมด (อ้างอิงด่วน)",
+      s1title: "ข้อมูลทั่วไปของผู้วิจัยและผลงาน",
+      gNameLbl: "ชื่อ–นามสกุลผู้วิจัย/ผู้เขียนหลัก",
+      gCoLbl: "ผู้เขียนร่วม (ถ้ามี)",
+      gInstLbl: "หน่วยงาน/สถาบัน/หลักสูตร",
+      gTypeLbl: "ประเภทผลงาน",
+      optChoose: "— เลือก —",
+      optThesis: "วิทยานิพนธ์", optDissertation: "ดุษฎีนิพนธ์", optResearchArticle: "บทความวิจัย",
+      optAcademicArticle: "บทความวิชาการ", optReport: "รายงานการค้นคว้าอิสระ", optOther: "อื่น ๆ",
+      gTitleLbl: "ชื่อผลงาน",
+      gAdvisorLbl: "อาจารย์ที่ปรึกษาหลัก/หัวหน้าโครงการ (ถ้ามี)",
+      gAdvisor2Lbl: "อาจารย์ที่ปรึกษาร่วม (ถ้ามี)",
+      gPeriodLbl: "ช่วงเวลาที่จัดทำผลงาน",
+      s2title: "คำประกาศเบื้องต้นการใช้เทคโนโลยีปัญญาประดิษฐ์",
+      declNoLbl: "ไม่ได้ใช้เทคโนโลยีปัญญาประดิษฐ์ในผลงานนี้ (ข้ามไปส่วนที่ ๗)",
+      declYesLbl: "ได้ใช้เทคโนโลยีปัญญาประดิษฐ์ (กรอกส่วนที่ ๓-๖ ให้ครบ)",
+      s3title: "ชุดบันทึกการใช้งานปัญญาประดิษฐ์",
+      s3hint: "กรอก 1 ชุดต่อการใช้ AI 1 เครื่องมือ × 1 ลักษณะการใช้งาน × 1 ส่วนของงาน หากใช้ AI หลายตัวในขั้นตอนเดียวกัน หรือใช้ตัวเดียวกันในหลายส่วนที่ลักษณะต่างกัน ให้เพิ่มชุดใหม่แยกกันเสมอ",
+      emptyState: "ยังไม่มีชุดบันทึก กดปุ่ม “+ เพิ่มชุดบันทึกการใช้งาน” เพื่อเริ่มต้น",
+      entryTitlePrefix: "ชุดบันทึกที่",
+      btnRemove: "ลบชุดนี้",
+      fToolLbl: "เครื่องมือ AI ที่ใช้ (ชื่อ)",
+      fVersionLbl: "เวอร์ชัน/รุ่น",
+      fDateLbl: "วันที่ใช้งาน",
+      fPartLbl: "ส่วนของงานที่ใช้",
+      fPartPh: "เช่น บทที่ ๒ หัวข้อ ๒.๓",
+      q1: "๑) หมวดการใช้งาน", q1hint: "เลือกได้มากกว่า 1 ข้อ",
+      q2: "๒) ระดับขอบเขตการใช้งาน", q2hint: "เลือกเพียง 1 ข้อที่ตรงที่สุด",
+      q3: "๓) ข้อมูล/เอกสารที่ป้อนเข้าระบบ AI", q3hint: "เลือกได้มากกว่า 1 ข้อ",
+      q4: "๔) คำสั่ง (Prompt) ที่ใช้โดยสรุป",
+      q5: "๕) วิธีตรวจสอบผลลัพธ์", q5hint: "เลือกได้มากกว่า 1 ข้อ",
+      q6: "๖) ระดับความมั่นใจต่อความถูกต้องของผลลัพธ์นี้",
+      q7: "๗) ท่านยอมรับความรับผิดชอบต่อผลลัพธ์ส่วนนี้ทั้งหมดหรือไม่",
+      confHigh: "มั่นใจมาก", confMid: "ปานกลาง", confLow: "ไม่มั่นใจ",
+      acctYes: "ยอมรับ", acctNo: "ไม่ยอมรับ",
+      acctReasonPh: "หากไม่ยอมรับ โปรดระบุเหตุผล/แผนดำเนินการ",
+      s4title: "สรุปและประเมินความเสี่ยงโดยรวม",
+      statEntries: "ชุดบันทึกทั้งหมด", statSumL: "ผลรวมคะแนน L",
+      statHighRisk: "ชุดข้อมูลนำเข้าเสี่ยงสูง", statPendingV4: "ชุดยังไม่ได้ตรวจสอบ (V4)",
+      formulaLabel: "สูตร:", formulaText: "ระดับการพึ่งพา AI เฉลี่ย (%) = [ผลรวมคะแนน L ÷ (5 × จำนวนชุดบันทึก)] × 100",
+      thresholdLbl: "เกณฑ์ที่ยอมรับได้ (กำหนดเอง):",
+      thresholdHint: "(ตัวอย่างทั่วไปคือไม่เกิน 40% ปรับได้ตามดุลยพินิจของผู้วิจัย/สถาบัน)",
+      thresholdGaugeLabel: "เกณฑ์",
+      resultNeutral: "ยังไม่มีชุดบันทึก",
+      resultOk: "อยู่ในเกณฑ์ที่ยอมรับได้ และไม่มีรายการเสี่ยงสูงค้างอยู่",
+      resultWarn: "% อยู่ในเกณฑ์ แต่ยังมีรายการเสี่ยงสูงที่ต้องจัดการ (ดูสถิติด้านบน)",
+      resultDanger: "เกินเกณฑ์ที่ยอมรับได้ — ควรทบทวนชุดบันทึกที่มีคะแนนสูงก่อนส่งผลงาน",
+      ivNote: "รหัส I (ข้อมูลนำเข้า) และรหัส V (การตรวจสอบ) ไม่นำมารวมในสูตรคำนวณ % นี้ เนื่องจากเป็นความเสี่ยงเชิงคุณภาพที่ควรพิจารณาเป็นจำนวนครั้ง ไม่ใช่สัดส่วน — หากมีชุดที่ติดรหัสความเสี่ยงสูงหรือยังค้าง V4 แม้เพียงชุดเดียว ควรจัดการให้เรียบร้อยก่อนส่งผลงาน ไม่ว่าค่า % โดยรวมจะต่ำเพียงใดก็ตาม",
+      overallRiskLbl: "ระดับความเสี่ยงโดยรวมของผลงานนี้ (ประเมินตนเอง)",
+      riskLow: "ต่ำ", riskMid: "ปานกลาง", riskHigh: "สูง",
+      s5title: "คำรับรองด้านจริยธรรมและทรัพย์สินทางปัญญา (ลิขสิทธิ์)",
+      s5hint: "ผู้วิจัย/ผู้เขียนพึงทำเครื่องหมายรับรองข้อความทุกข้อต่อไปนี้ ก่อนยื่นเครื่องมือนี้ประกอบการส่งผลงาน",
+      s6title: "การตรวจสอบและรับรองโดยอาจารย์ที่ปรึกษา/ผู้ตรวจสอบ",
+      s6hint: "สำหรับอาจารย์ที่ปรึกษา หัวหน้าโครงการ หรือบรรณาธิการผู้รับผิดชอบ ทำเครื่องหมายรับรองหลังตรวจทานส่วนที่ ๓ แล้ว",
+      s7title: "การลงนามรับรอง",
+      sigResearcherLbl: "ผู้วิจัย/ผู้เขียนหลัก (พิมพ์ชื่อแทนการลงนาม)",
+      sigDateLbl: "วันที่",
+      sigCoLbl: "ผู้เขียนร่วม (ถ้ามี)",
+      sigAdvisorLbl: "อาจารย์ที่ปรึกษาหลัก/หัวหน้าโครงการ/ผู้ตรวจสอบ",
+      sigAdvisor2Lbl: "อาจารย์ที่ปรึกษาร่วม (ถ้ามี)",
+      sigNote: "เอกสารอิเล็กทรอนิกส์ฉบับนี้ใช้การพิมพ์ชื่อแทนลายมือชื่อ หากหน่วยงานต้องการลายมือชื่อจริง โปรดพิมพ์เอกสารนี้ (ปุ่ม “พิมพ์ / บันทึกเป็น PDF” ด้านบน) แล้วลงนามด้วยตนเอง",
+      footerText: "เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย — ฉบับอิเล็กทรอนิกส์  |  ใช้คู่กับคู่มือการใช้เครื่องมือสำหรับคำอธิบายรหัสและตัวอย่างโดยละเอียด",
+      ovH: ["ส่วนที่","ชื่อส่วน","ใครเป็นผู้กรอก","วัตถุประสงค์โดยย่อ"],
+      ovRows: [
+        ["๑","ข้อมูลทั่วไปของผู้วิจัยและผลงาน","ผู้วิจัย/ผู้เขียนหลัก","ระบุตัวตนและขอบเขตของผลงาน"],
+        ["๒","คำประกาศเบื้องต้น","ผู้วิจัย/ผู้เขียนหลัก","ประกาศว่ามีการใช้ AI หรือไม่"],
+        ["๓","ชุดบันทึกการใช้งานปัญญาประดิษฐ์","ผู้วิจัย/ผู้เขียนหลัก","กรอก 1 ชุดต่อการใช้ AI 1 ครั้ง"],
+        ["๔","สรุปและประเมินความเสี่ยงโดยรวม","ผู้วิจัย/ผู้เขียนหลัก","คำนวณ % อัตโนมัติจากทุกชุดบันทึก"],
+        ["๕","คำรับรองด้านจริยธรรมและลิขสิทธิ์","ผู้วิจัย/ผู้เขียนหลัก","ยืนยันการปฏิบัติตามหลักจริยธรรม"],
+        ["๖","การตรวจสอบโดยอาจารย์ที่ปรึกษา/ผู้ตรวจสอบ","อาจารย์ที่ปรึกษา/บรรณาธิการ","ตรวจทานและรับรองความเหมาะสม"],
+        ["๗","การลงนามรับรอง","ทุกฝ่ายที่เกี่ยวข้อง","ยืนยันความถูกต้อง"]
+      ],
+      mH: ["ชุดรหัส","รหัส","ความหมายโดยย่อ","ค่าแทนสำหรับคำนวณ"],
+      grpCat: "หมวดการใช้งาน (ไม่มีคะแนน)", grpExt: "ระดับขอบเขต (นำไปคำนวณ %)",
+      grpInp: "ข้อมูลนำเข้า (นับจำนวนครั้ง)", grpVer: "วิธีตรวจสอบ (นับจำนวนครั้ง)",
+      valNone: "ใช้จำแนกประเภทเท่านั้น ไม่มีค่าแทน",
+      valPts: " คะแนน",
+      valZeroSafe: "0 (ไม่นับเป็นความเสี่ยง)",
+      valFlag: "นับ 1 ครั้ง (ความเสี่ยงสูง)",
+      valFlagV4: "นับ 1 ครั้ง (เสี่ยงสูง ต้องแก้ไข)",
+      valVerified: "0 (ตรวจสอบแล้ว ไม่เสี่ยง)",
+      legendGreen: "สีเขียว", legendGreenTxt: " = มีค่าแทนเป็นตัวเลข นำไปรวมคำนวณ %   ",
+      legendOrange: "สีส้ม", legendOrangeTxt: " = ความเสี่ยงสูง นับเป็นจำนวนครั้ง   ",
+      legendGray: "สีเทา", legendGrayTxt: " = ไม่มีความเสี่ยงหรือไม่มีค่าแทน",
+      num1: "๑", num2: "๒", num3: "๓", num4: "๔", num5: "๕", num6: "๖", num7: "๗"
+    },
+    en: {
+      h1: "AI Research-Use Ethics Declaration and Verification Instrument",
+      hsub1: "เครื่องมือตรวจสอบและรับรองจริยธรรมการใช้ปัญญาประดิษฐ์ในงานวิจัย",
+      hsub2: "For theses, dissertations, academic articles, and independent-study reports, in any field",
+      hbadge: "Electronic edition — auto-calculates the % score",
+      btnAddEntry: "+ Add usage entry",
+      btnPrint: "Print / Save as PDF",
+      instrLabel: "How to use this instrument:",
+      instrBody: "This instrument records and certifies the use of Artificial Intelligence (AI) in producing academic work, to ensure transparency, traceability, and protection against academic-integrity or intellectual-property violations. Every option carries both a reference code and a plain-language explanation, so it can be filled in without consulting any other document. Your average AI-dependency level is calculated automatically as a percentage in Part 4. This page does not save data automatically — we recommend completing it in one sitting, or using the “Print / Save as PDF” button to keep periodic copies.",
+      refSummary: "Show/hide the full code & score quick-reference table",
+      s1title: "General Information About the Researcher and the Work",
+      gNameLbl: "Researcher / lead author name",
+      gCoLbl: "Co-author(s) (if any)",
+      gInstLbl: "Institution / program",
+      gTypeLbl: "Type of work",
+      optChoose: "— Select —",
+      optThesis: "Thesis", optDissertation: "Dissertation", optResearchArticle: "Research article",
+      optAcademicArticle: "Academic article", optReport: "Independent study report", optOther: "Other",
+      gTitleLbl: "Title of the work",
+      gAdvisorLbl: "Primary advisor / project lead (if any)",
+      gAdvisor2Lbl: "Co-advisor (if any)",
+      gPeriodLbl: "Period the work was produced",
+      s2title: "Preliminary Declaration of AI Use",
+      declNoLbl: "AI was not used in producing this work (skip to Part 7)",
+      declYesLbl: "AI was used (complete Parts 3–6 in full)",
+      s3title: "AI Usage Log Entries",
+      s3hint: "Complete one entry per (1 AI tool) × (1 type of use) × (1 part of the work). If you used multiple AI tools in the same step, or the same tool across different parts, always log them as separate entries.",
+      emptyState: "No entries yet. Click “+ Add usage entry” to begin.",
+      entryTitlePrefix: "Entry",
+      btnRemove: "Remove entry",
+      fToolLbl: "AI tool used (name)",
+      fVersionLbl: "Version / model",
+      fDateLbl: "Date used",
+      fPartLbl: "Part of the work",
+      fPartPh: "e.g. Chapter 2, Section 2.3",
+      q1: "1) Category of use", q1hint: "select all that apply",
+      q2: "2) Extent of use", q2hint: "select the single best match",
+      q3: "3) Data/documents entered into the AI", q3hint: "select all that apply",
+      q4: "4) Summary of the prompt(s) used",
+      q5: "5) How the output was verified", q5hint: "select all that apply",
+      q6: "6) Your confidence in the accuracy of this output",
+      q7: "7) Do you accept full responsibility for this output?",
+      confHigh: "High confidence", confMid: "Medium", confLow: "Low confidence",
+      acctYes: "Accept", acctNo: "Do not accept",
+      acctReasonPh: "If not accepted, state the reason / remediation plan",
+      s4title: "Overall Risk Summary and Assessment",
+      statEntries: "Total entries", statSumL: "Sum of L scores",
+      statHighRisk: "High-risk input entries", statPendingV4: "Entries pending verification (V4)",
+      formulaLabel: "Formula:", formulaText: "Average AI-dependency (%) = [Sum of L scores ÷ (5 × number of entries)] × 100",
+      thresholdLbl: "Acceptable threshold (set your own):",
+      thresholdHint: "(A common default is 40% — adjust based on your or your institution's judgment)",
+      thresholdGaugeLabel: "Threshold",
+      resultNeutral: "No entries yet",
+      resultOk: "Within the acceptable threshold, with no outstanding high-risk items",
+      resultWarn: "% is within threshold, but high-risk items still need attention (see stats above)",
+      resultDanger: "Exceeds the acceptable threshold — review the highest-scoring entries before submitting",
+      ivNote: "The I (input data) and V (verification) codes are not included in this % formula, because they represent qualitative risks best tracked as counts rather than proportions — if even a single entry carries a high-risk input code or a pending V4, it should be resolved before submission regardless of how low the overall % is.",
+      overallRiskLbl: "Overall risk level of this work (self-assessed)",
+      riskLow: "Low", riskMid: "Medium", riskHigh: "High",
+      s5title: "Ethics and Intellectual-Property Certification",
+      s5hint: "The researcher/author should check every statement below before submitting this instrument with their work.",
+      s6title: "Review and Certification by the Advisor / Reviewer",
+      s6hint: "For the advisor, project lead, or responsible editor — check off after reviewing Part 3.",
+      s7title: "Signatures",
+      sigResearcherLbl: "Researcher / lead author (typed name in lieu of signature)",
+      sigDateLbl: "Date",
+      sigCoLbl: "Co-author (if any)",
+      sigAdvisorLbl: "Primary advisor / project lead / reviewer",
+      sigAdvisor2Lbl: "Co-advisor (if any)",
+      sigNote: "This electronic document uses a typed name in place of a handwritten signature. If your institution requires an original signature, print this document (the “Print / Save as PDF” button above) and sign it by hand.",
+      footerText: "AI Research-Use Ethics Declaration and Verification Instrument — electronic edition  |  Use alongside the companion user guide for detailed code explanations and worked examples.",
+      ovH: ["Part","Name","Who completes it","Purpose"],
+      ovRows: [
+        ["1","General information","Researcher / lead author","States identity and scope of the work"],
+        ["2","Preliminary declaration","Researcher / lead author","States whether AI was used"],
+        ["3","AI usage log entries","Researcher / lead author","One entry per use of AI"],
+        ["4","Overall risk summary","Researcher / lead author","Auto-calculates % from all entries"],
+        ["5","Ethics & copyright certification","Researcher / lead author","Confirms compliance with ethics principles"],
+        ["6","Advisor / reviewer check","Advisor / editor","Reviews and certifies appropriateness"],
+        ["7","Signatures","All relevant parties","Confirms accuracy"]
+      ],
+      mH: ["Code set","Code","Brief meaning","Value used in calculation"],
+      grpCat: "Category of use (unscored)", grpExt: "Extent level (used in % calc)",
+      grpInp: "Input data (counted as flags)", grpVer: "Verification (counted as flags)",
+      valNone: "Classification only — no numeric value",
+      valPts: " point(s)",
+      valZeroSafe: "0 (not counted as risk)",
+      valFlag: "Counted once (high risk)",
+      valFlagV4: "Counted once (high risk — must resolve)",
+      valVerified: "0 (already verified — no risk)",
+      legendGreen: "Green", legendGreenTxt: " = has a numeric value, included in the % calculation   ",
+      legendOrange: "Orange", legendOrangeTxt: " = high risk, counted as a flag   ",
+      legendGray: "Gray", legendGrayTxt: " = no risk or no numeric value",
+      num1: "1", num2: "2", num3: "3", num4: "4", num5: "5", num6: "6", num7: "7"
+    }
+  };
+
+  function T(key){ return I18N[state.lang][key]; }
+
+  // ============== Bilingual data (code, {th,en} label, {th,en} note, ...) ==============
+  var CATS = [
+    ["A", {th:"ภาษาและการเขียน", en:"Language & writing"},
+          {th:"ตรวจไวยากรณ์/พิสูจน์อักษร เรียบเรียงประโยคใหม่ ขัดเกลาภาษา วางโครงร่าง หรือสร้างเนื้อหาใหม่",
+           en:"Grammar/proofreading, rewording, polishing, outlining, or drafting new content"}],
+    ["B", {th:"วิจัยและระดมสมอง", en:"Research & brainstorming"},
+          {th:"ระดมความคิด วางโครงเรื่อง หรือสรุปเอกสาร/บทความงานวิจัย",
+           en:"Brainstorming, outlining, or summarizing papers/documents"}],
+    ["C", {th:"แปลภาษา/สืบค้นต้นฉบับ", en:"Translation / primary-source lookup"},
+          {th:"แปลข้อความข้ามภาษา หรือสืบค้นตำรา คัมภีร์ เอกสารต้นฉบับเฉพาะทาง",
+           en:"Cross-language translation, or retrieving specialised texts/scriptures/primary sources"}],
+    ["D", {th:"การวิเคราะห์ข้อมูล", en:"Data analysis"},
+          {th:"วิเคราะห์เชิงปริมาณ จัดหมวดหมู่/วิเคราะห์เชิงคุณภาพ สร้างภาพ/แผนภูมิ",
+           en:"Quantitative analysis, qualitative coding/analysis, or generating charts/figures"}],
+    ["E", {th:"การอ้างอิงและบรรณานุกรม", en:"Citations & bibliography"},
+          {th:"จัดรูปแบบการอ้างอิง หรือค้นหา/แนะนำแหล่งอ้างอิงใหม่",
+           en:"Formatting citations, or finding/suggesting new references"}],
+    ["F", {th:"อื่น ๆ", en:"Other"},
+          {th:"โปรดระบุลักษณะการใช้งานในช่องหมายเหตุ", en:"Please specify the nature of use in the prompt/notes field"}]
+  ];
+  var EXTENTS = [
+    ["L1",1,{th:"ตรวจสอบ/พิสูจน์อักษรเท่านั้น", en:"Proofreading only"},
+             {th:"เนื้อหาความคิดเป็นของผู้เขียนทั้งหมด ความเสี่ยงต่ำสุด", en:"All ideas remain the author's own — lowest risk"}],
+    ["L2",2,{th:"ปรับสำนวน/เรียบเรียงประโยคใหม่", en:"Rewording / restyling"},
+             {th:"เนื้อหาความคิดเดิมยังเป็นของผู้เขียน", en:"The original ideas remain the author's own"}],
+    ["L3",3,{th:"ช่วยวางโครงร่าง/ให้แนวทาง", en:"Helped outline / suggested direction"},
+             {th:"ผู้เขียนเป็นผู้เขียนเนื้อหาเองทั้งหมด", en:"The author wrote all the content themself"}],
+    ["L4",4,{th:"ร่างเนื้อหาบางส่วน แล้วผู้เขียนแก้ไขอย่างมีนัยสำคัญ", en:"Drafted part of the content, then substantially revised by the author"},
+             {th:"ก่อนนำไปใช้จริง", en:"before being used in the final work"}],
+    ["L5",5,{th:"สร้างเนื้อหา/ผลลัพธ์เกือบทั้งหมดของส่วนนี้", en:"Generated nearly all of this section's content"},
+             {th:"ความเสี่ยงสูงสุด ควรพิจารณาอย่างรอบคอบและเปิดเผยละเอียดที่สุด", en:"Highest risk — consider carefully and disclose in full detail"}]
+  ];
+  var INPUTS = [
+    ["I0",{th:"ไม่ได้ป้อนข้อมูล/เอกสารใดเข้าระบบ", en:"No data or documents entered"},
+          {th:"เช่น ถามคำถามทั่วไปโดยไม่แนบไฟล์ ความเสี่ยงต่ำสุด", en:"e.g. a general question with no attached file — lowest risk"}, false],
+    ["I1",{th:"ข้อมูลสาธารณะที่เผยแพร่แล้วและอนุญาตให้ใช้ได้", en:"Public data already published and licensed for use"}, {th:"", en:""}, false],
+    ["I2",{th:"ข้อมูล/เอกสารที่มีลิขสิทธิ์ของผู้อื่น", en:"Data/documents copyrighted by someone else"},
+          {th:"ข้อควรระวัง: ต้องตรวจสอบเงื่อนไขการใช้งานก่อนเสมอ มิฉะนั้นอาจละเมิดลิขสิทธิ์",
+           en:"Caution: always check the terms of use first, or this may infringe copyright"}, true],
+    ["I3",{th:"ข้อมูลส่วนบุคคล/ข้อมูลจากผู้ให้สัมภาษณ์", en:"Personal data / interviewee data"},
+          {th:"ข้อควรระวัง: ห้ามป้อนเข้าระบบสาธารณะโดยไม่ปกปิดตัวตน/ไม่ได้รับอนุญาต",
+           en:"Caution: never enter into a public system without de-identifying and obtaining consent"}, true],
+    ["I4",{th:"ผลงานของผู้วิจัยเองที่ยังไม่เผยแพร่", en:"The researcher's own unpublished work"},
+          {th:"ข้อควรระวัง: ระวังข้อมูลรั่วไหลหรือถูกนำไปฝึกฝนแบบจำลองต่อ",
+           en:"Caution: beware of leaks or of the data being used for further model training"}, true]
+  ];
+  var VERIFIES = [
+    ["V1",{th:"ตรวจสอบกับต้นฉบับปฐมภูมิโดยตรง", en:"Verified directly against the primary source"},
+          {th:"เช่น เทียบกับตัวเล่ม/หน้าในคัมภีร์หรือเอกสารต้นทางจริง", en:"e.g. checked against the actual volume/page in the original text"}, false],
+    ["V2",{th:"ตรวจสอบกับฐานข้อมูลวิชาการ/DOI", en:"Verified against an academic database/DOI"},
+          {th:"เช่น Google Scholar, Scopus, ThaiJo", en:"e.g. Google Scholar, Scopus, ThaiJo"}, false],
+    ["V3",{th:"ให้อาจารย์ที่ปรึกษา/ผู้เชี่ยวชาญตรวจทาน", en:"Reviewed by an advisor / subject-matter expert"}, {th:"", en:""}, false],
+    ["V4",{th:"ยังไม่ได้ตรวจสอบ", en:"Not yet verified"},
+          {th:"สถานะชั่วคราว ต้องกลับมาตรวจสอบให้เสร็จก่อนส่งผลงานฉบับสมบูรณ์",
+           en:"Temporary status — must be resolved before the final work is submitted"}, true]
+  ];
+  var CERTS = [
+    {th:"ข้าพเจ้าได้ตรวจสอบและยืนยันความถูกต้องของการอ้างอิงทุกรายการที่ปัญญาประดิษฐ์แนะนำกับแหล่งข้อมูลปฐมภูมิแล้ว ไม่มีรายการใดเป็นการอ้างอิงที่กุขึ้นหรือคลาดเคลื่อน",
+     en:"I have checked and verified every citation suggested by AI against its primary source; none are fabricated or inaccurate."},
+    {th:"ข้าพเจ้ายืนยันว่าเนื้อหาหลัก การตีความ และข้อวินิจฉัยทางวิชาการทั้งหมดในผลงานนี้เป็นผลจากดุลยพินิจของข้าพเจ้าเอง มิใช่การคัดลอกผลลัพธ์จากปัญญาประดิษฐ์มาใช้โดยตรงโดยไม่ผ่านการเรียบเรียงหรือตรวจสอบ",
+     en:"I confirm that the core content, interpretation, and academic judgments in this work are my own, not copied directly from AI output without review or revision."},
+    {th:"ข้าพเจ้าไม่ได้นำข้อมูลส่วนบุคคล ข้อมูลที่เป็นความลับของผู้ให้ข้อมูล/ผู้เข้าร่วมวิจัย หรือผลงานที่ยังไม่เผยแพร่ เข้าสู่ระบบปัญญาประดิษฐ์สาธารณะโดยไม่ได้รับอนุญาต",
+     en:"I have not entered personal data, confidential participant information, or unpublished work into a public AI system without authorization."},
+    {th:"ข้าพเจ้าไม่ได้นำผลงานที่มีลิขสิทธิ์ของผู้อื่นป้อนเข้าสู่ปัญญาประดิษฐ์เพื่อผลิตซ้ำหรือดัดแปลงโดยไม่ได้รับอนุญาตจากเจ้าของลิขสิทธิ์ และได้ตรวจสอบเงื่อนไขการใช้งานของเครื่องมือที่ใช้แล้ว",
+     en:"I have not fed copyrighted third-party work into AI to reproduce or adapt it without permission, and I have checked the tool's terms of use."},
+    {th:"ข้าพเจ้าเข้าใจและยอมรับว่าจะรับผิดชอบแต่เพียงผู้เดียว (หรือร่วมกับผู้เขียนร่วม) ต่อความถูกต้อง ความสมบูรณ์ และการละเมิดทรัพย์สินทางปัญญาใด ๆ ที่อาจเกิดขึ้นจากการใช้ปัญญาประดิษฐ์ในผลงานนี้",
+     en:"I understand and accept sole (or shared, with co-authors) responsibility for the accuracy, completeness, and any IP infringement that may arise from AI use in this work."},
+    {th:"ข้าพเจ้าเข้าใจว่าการใช้ปัญญาประดิษฐ์โดยไม่เปิดเผย หรือการใช้นอกขอบเขตที่แจ้งไว้ในเครื่องมือนี้ ถือเป็นการละเมิดจรรยาบรรณทางวิชาการ",
+     en:"I understand that undisclosed AI use, or use beyond what is declared here, constitutes an academic integrity violation."},
+    {th:"ข้าพเจ้าได้อ่านหรือศึกษาเอกสารต้นฉบับจริงก่อนนำมาใช้สนับสนุนงานวิจัย พร้อมทั้งตรวจสอบความถูกต้องของข้อมูลและการอ้างอิงที่ปัญญาประดิษฐ์แนะนำทุกรายการแล้วอย่างรอบคอบ",
+     en:"I have read the actual primary sources before citing them, and have carefully verified every AI-suggested reference and fact."},
+    {th:"ข้าพเจ้าไม่มีชุดบันทึกใดในส่วนที่ ๓ ที่ยังกา “ยังไม่ได้ตรวจสอบ” ค้างอยู่โดยไม่มีเหตุผลอันสมควร",
+     en:"No entry in Part 3 is still marked “not yet verified” without a reasonable justification."},
+    {th:"(กรณีมีผู้เขียนร่วม) ข้าพเจ้าและผู้เขียนร่วมทุกคนรับทราบและเห็นชอบร่วมกันในการใช้ปัญญาประดิษฐ์ตามที่บันทึกไว้ในเครื่องมือนี้",
+     en:"(If co-authored) All co-authors are aware of and agree with the AI use recorded in this instrument."}
+  ];
+  var ADVISOR_ITEMS = [
+    {th:"ข้าพเจ้าได้ตรวจสอบชุดบันทึกการใช้ปัญญาประดิษฐ์ในส่วนที่ ๓ แล้ว และเห็นว่าขอบเขตการใช้งานที่ระบุไว้มีความเหมาะสมกับลักษณะของผลงานนี้",
+     en:"I have reviewed the AI usage entries in Part 3 and consider the declared extent of use appropriate for this type of work."},
+    {th:"ข้าพเจ้าได้สุ่มตรวจสอบความถูกต้องของการอ้างอิงหรือข้อมูลอ้างอิงอย่างน้อยบางส่วนแล้ว",
+     en:"I have spot-checked at least some of the citations or referenced data for accuracy."},
+    {th:"ข้าพเจ้าเห็นว่าเนื้อหาความคิดหลัก การตีความ และข้อวินิจฉัยทางวิชาการยังคงเป็นของผู้วิจัย/ผู้เขียนอย่างแท้จริง มิได้พึ่งพาปัญญาประดิษฐ์เกินขอบเขตที่เหมาะสม",
+     en:"I consider the core ideas, interpretation, and academic judgment to genuinely remain the researcher's/author's own, without excessive reliance on AI."},
+    {th:"ข้าพเจ้าอนุญาตให้ส่งผลงานนี้ประกอบการพิจารณาต่อไป โดยรับทราบคำประกาศการใช้ปัญญาประดิษฐ์ตามที่ระบุในเครื่องมือนี้ทั้งหมดแล้ว",
+     en:"I approve this work for submission for further consideration, having acknowledged the full AI-use declaration recorded in this instrument."}
+  ];
+
+  function pick(pair){ return pair ? (pair[state.lang] || pair.th || "") : ""; }
+  function escapeHTML(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function escapeAttr(s){ return escapeHTML(s).replace(/"/g,"&quot;"); }
+
+  function newEntry(){
+    state.counter++;
+    return {
+      id: "e"+state.counter, tool:"", version:"", date:"", part:"",
+      categories:[], extent:null, extentScore:0,
+      inputs:[], prompt:"", verifications:[],
+      confidence:null, accountable:null, accountableReason:""
+    };
+  }
+
+  function entryHTML(e, idx){
+    var id = e.id;
+    function chk(arr, val){ return arr.indexOf(val)>-1 ? "checked" : ""; }
+
+    var catOpts = CATS.map(function(c){
+      return '<label class="opt"><input type="checkbox" data-entry-id="'+id+'" data-field="categories" data-value="'+c[0]+'" '+chk(e.categories,c[0])+'>' +
+             '<span><span class="code">'+c[0]+'</span> '+pick(c[1])+' <span class="note">('+pick(c[2])+')</span></span></label>';
+    }).join("");
+
+    var extOpts = EXTENTS.map(function(x){
+      var checked = e.extent===x[0] ? "checked" : "";
+      return '<label class="opt"><input type="radio" name="extent-'+id+'" data-entry-id="'+id+'" data-field="extent" data-value="'+x[0]+'" data-score="'+x[1]+'" '+checked+'>' +
+             '<span><span class="code">'+x[0]+'</span> '+pick(x[2])+' <span class="score-chip">'+x[1]+T("valPts")+'</span> <span class="note">('+pick(x[3])+')</span></span></label>';
+    }).join("");
+
+    var inpOpts = INPUTS.map(function(i){
+      var noteStr = pick(i[2]);
+      return '<label class="opt"><input type="checkbox" data-entry-id="'+id+'" data-field="inputs" data-value="'+i[0]+'" '+chk(e.inputs,i[0])+'>' +
+             '<span><span class="code">'+i[0]+'</span> '+pick(i[1])+(noteStr?' <span class="note">('+noteStr+')</span>':'')+'</span></label>';
+    }).join("");
+
+    var verOpts = VERIFIES.map(function(v){
+      var noteStr = pick(v[2]);
+      return '<label class="opt"><input type="checkbox" data-entry-id="'+id+'" data-field="verifications" data-value="'+v[0]+'" '+chk(e.verifications,v[0])+'>' +
+             '<span><span class="code">'+v[0]+'</span> '+pick(v[1])+(noteStr?' <span class="note">('+noteStr+')</span>':'')+'</span></label>';
+    }).join("");
+
+    var confRow = ["high","mid","low"].map(function(c){
+      var labels = {high:T("confHigh"), mid:T("confMid"), low:T("confLow")};
+      var checked = e.confidence===c ? "checked" : "";
+      return '<label><input type="radio" name="conf-'+id+'" data-entry-id="'+id+'" data-field="confidence" data-value="'+c+'" '+checked+'> '+labels[c]+'</label>';
+    }).join("");
+
+    var acctRow = ["yes","no"].map(function(a){
+      var labels = {yes:T("acctYes"), no:T("acctNo")};
+      var checked = e.accountable===a ? "checked" : "";
+      return '<label><input type="radio" name="acct-'+id+'" data-entry-id="'+id+'" data-field="accountable" data-value="'+a+'" '+checked+'> '+labels[a]+'</label>';
+    }).join("");
+
+    var titleText = T("entryTitlePrefix")+" "+(idx+1)+(e.tool? " — "+e.tool : "");
+
+    return '' +
+    '<div class="card entry-card" data-card-id="'+id+'">' +
+      '<div class="entry-head"><span class="title">'+escapeHTML(titleText)+'</span>' +
+        '<button class="btn small danger-outline no-print" data-remove="'+id+'">'+T("btnRemove")+'</button></div>' +
+      '<div class="field-grid">' +
+        '<div><label class="field-label">'+T("fToolLbl")+'</label><input type="text" data-entry-id="'+id+'" data-field="tool" value="'+escapeAttr(e.tool)+'"></div>' +
+        '<div><label class="field-label">'+T("fVersionLbl")+'</label><input type="text" data-entry-id="'+id+'" data-field="version" value="'+escapeAttr(e.version)+'"></div>' +
+        '<div><label class="field-label">'+T("fDateLbl")+'</label><input type="date" data-entry-id="'+id+'" data-field="date" value="'+escapeAttr(e.date)+'"></div>' +
+        '<div><label class="field-label">'+T("fPartLbl")+'</label><input type="text" data-entry-id="'+id+'" data-field="part" placeholder="'+T("fPartPh")+'" value="'+escapeAttr(e.part)+'"></div>' +
+      '</div>' +
+      '<div class="q-label">'+T("q1")+' <span class="q-hint">('+T("q1hint")+')</span></div>' + catOpts +
+      '<div class="q-label">'+T("q2")+' <span class="q-hint">('+T("q2hint")+')</span></div>' + extOpts +
+      '<div class="q-label">'+T("q3")+' <span class="q-hint">('+T("q3hint")+')</span></div>' + inpOpts +
+      '<div class="q-label">'+T("q4")+'</div>' +
+      '<textarea data-entry-id="'+id+'" data-field="prompt">'+escapeHTML(e.prompt)+'</textarea>' +
+      '<div class="q-label">'+T("q5")+' <span class="q-hint">('+T("q5hint")+')</span></div>' + verOpts +
+      '<div class="q-label">'+T("q6")+'</div>' +
+      '<div class="radio-row">'+confRow+'</div>' +
+      '<div class="q-label">'+T("q7")+'</div>' +
+      '<div class="radio-row">'+acctRow+'</div>' +
+      '<input type="text" style="margin-top:8px;" placeholder="'+T("acctReasonPh")+'" data-entry-id="'+id+'" data-field="accountableReason" value="'+escapeAttr(e.accountableReason)+'">' +
+    '</div>';
+  }
+
+  function renderEntries(){
+    var c = document.getElementById("entriesContainer");
+    if(state.entries.length===0){
+      c.innerHTML = '<div class="empty-state">'+T("emptyState")+'</div>';
+      return;
+    }
+    c.innerHTML = state.entries.map(entryHTML).join("");
+  }
+
+  function renderChecklist(containerId, items, prefix){
+    var c = document.getElementById(containerId);
+    c.innerHTML = items.map(function(t, i){
+      return '<label class="cert-item"><input type="checkbox" id="'+prefix+i+'"><span>'+pick(t)+'</span></label>';
+    }).join("");
+  }
+
+  function renderOverviewTable(){
+    var t = document.getElementById("overviewTable");
+    var h = T("ovH"), rows = T("ovRows");
+    var html = '<tr><th>'+h[0]+'</th><th>'+h[1]+'</th><th>'+h[2]+'</th><th>'+h[3]+'</th></tr>';
+    rows.forEach(function(r){
+      html += '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';
+    });
+    t.innerHTML = html;
+  }
+
+  function renderMasterTable(){
+    var t = document.getElementById("masterTable");
+    var h = T("mH");
+    var rows = [];
+    CATS.forEach(function(c){ rows.push([T("grpCat"), c[0], pick(c[1]), T("valNone"), "tag-none"]); });
+    EXTENTS.forEach(function(x){ rows.push([T("grpExt"), x[0], pick(x[2]), x[1]+T("valPts"), "tag-scored"]); });
+    INPUTS.forEach(function(i){
+      var val = i[3] ? T("valFlag") : T("valZeroSafe");
+      rows.push([T("grpInp"), i[0], pick(i[1]), val, i[3] ? "tag-flag" : "tag-none"]);
+    });
+    VERIFIES.forEach(function(v){
+      var val = v[0]==="V4" ? T("valFlagV4") : T("valVerified");
+      rows.push([T("grpVer"), v[0], pick(v[1]), val, v[0]==="V4" ? "tag-flag" : "tag-none"]);
+    });
+    var html = '<tr><th>'+h[0]+'</th><th>'+h[1]+'</th><th>'+h[2]+'</th><th>'+h[3]+'</th></tr>';
+    rows.forEach(function(r){
+      html += '<tr><td>'+r[0]+'</td><td><strong>'+r[1]+'</strong></td><td>'+r[2]+'</td><td class="'+r[4]+'">'+r[3]+'</td></tr>';
+    });
+    t.innerHTML = html;
+
+    document.getElementById("masterLegend").innerHTML =
+      '<span class="swatch tag-scored">'+T("legendGreen")+'</span>'+T("legendGreenTxt")+
+      '<span class="swatch tag-flag">'+T("legendOrange")+'</span>'+T("legendOrangeTxt")+
+      '<span class="swatch tag-none">'+T("legendGray")+'</span>'+T("legendGrayTxt");
+  }
+
+  function recalc(){
+    var entries = state.entries;
+    var n = entries.length;
+    var sumL = entries.reduce(function(s,e){ return s + (e.extentScore||0); }, 0);
+    var percent = n>0 ? (sumL/(5*n))*100 : 0;
+    var highRisk = entries.filter(function(e){
+      return e.inputs.some(function(v){ return v==="I2"||v==="I3"||v==="I4"; });
+    }).length;
+    var pendingV4 = entries.filter(function(e){ return e.verifications.indexOf("V4")>-1; }).length;
+    var threshold = Number(document.getElementById("thresholdInput").value) || 0;
+
+    document.getElementById("sumEntries").textContent = n;
+    document.getElementById("sumL").textContent = sumL;
+    document.getElementById("highRiskCount").textContent = highRisk;
+    document.getElementById("pendingVerifyCount").textContent = pendingV4;
+    document.getElementById("percentDisplay").textContent = percent.toFixed(1)+"%";
+    document.getElementById("formulaText").textContent = T("formulaText");
+    document.getElementById("formulaLine").textContent =
+      (state.lang==="th"?"แทนค่า: ":"Substituting: ")+"["+sumL+" ÷ (5 × "+n+")] × 100 = "+percent.toFixed(1)+"%";
+    document.getElementById("ivNote").textContent = T("ivNote");
+
+    var fill = document.getElementById("gaugeFill");
+    fill.style.width = Math.min(percent,100)+"%";
+    var markEl = document.getElementById("gaugeThresholdMark");
+    markEl.style.left = Math.min(threshold,100)+"%";
+    markEl.setAttribute("data-label", T("thresholdGaugeLabel"));
+
+    var badge = document.getElementById("percentResult");
+    if(n===0){
+      badge.textContent = T("resultNeutral");
+      badge.className = "result-badge neutral";
+      fill.style.background = "var(--text-soft)";
+    } else if(percent<=threshold && highRisk===0 && pendingV4===0){
+      badge.textContent = T("resultOk");
+      badge.className = "result-badge ok";
+      fill.style.background = "var(--green)";
+    } else if(percent<=threshold){
+      badge.textContent = T("resultWarn");
+      badge.className = "result-badge warn";
+      fill.style.background = "var(--amber)";
+    } else {
+      badge.textContent = T("resultDanger");
+      badge.className = "result-badge danger";
+      fill.style.background = "var(--red)";
+    }
+  }
+
+  function addEntry(){
+    state.entries.push(newEntry());
+    renderEntries();
+    recalc();
+  }
+  function removeEntry(id){
+    state.entries = state.entries.filter(function(e){ return e.id!==id; });
+    renderEntries();
+    recalc();
+  }
+
+  document.getElementById("entriesContainer").addEventListener("input", handleEntryChange);
+  document.getElementById("entriesContainer").addEventListener("change", handleEntryChange);
+  document.getElementById("entriesContainer").addEventListener("click", function(ev){
+    var node = ev.target;
+    var root = this;
+    while(node && node !== root){
+      if(node.getAttribute && node.getAttribute("data-remove")){
+        removeEntry(node.getAttribute("data-remove"));
+        return;
+      }
+      node = node.parentNode;
+    }
+  });
+
+  function findEntry(id){
+    for(var i=0;i<state.entries.length;i++){
+      if(state.entries[i].id===id) return state.entries[i];
+    }
+    return null;
+  }
+
+  function handleEntryChange(ev){
+    var t = ev.target;
+    var id = t.getAttribute("data-entry-id");
+    if(!id) return;
+    var entry = findEntry(id);
+    if(!entry) return;
+    var field = t.getAttribute("data-field");
+    if(!field) return;
+
+    if(t.type==="checkbox"){
+      var val = t.getAttribute("data-value");
+      if(t.checked){ if(entry[field].indexOf(val)===-1) entry[field].push(val); }
+      else { entry[field] = entry[field].filter(function(v){ return v!==val; }); }
+    } else if(t.type==="radio"){
+      entry[field] = t.getAttribute("data-value");
+      if(field==="extent"){ entry.extentScore = Number(t.getAttribute("data-score")); }
+    } else {
+      entry[field] = t.value;
+      if(field==="tool"){
+        var head = document.querySelector('[data-card-id="'+id+'"] .entry-head .title');
+        if(head){
+          var idx = state.entries.indexOf(entry);
+          head.textContent = T("entryTitlePrefix")+" "+(idx+1)+(entry.tool? " — "+entry.tool : "");
+        }
+      }
+    }
+    recalc();
+  }
+
+  document.getElementById("thresholdInput").addEventListener("input", recalc);
+  document.getElementById("addEntryBtn").addEventListener("click", addEntry);
+  document.getElementById("addEntryBtnTop").addEventListener("click", addEntry);
+
+  function updateDeclVisibility(){
+    var isNo = document.getElementById("declNo").checked;
+    document.getElementById("aiSections").style.display = isNo ? "none" : "block";
+  }
+  document.getElementById("declNo").addEventListener("change", updateDeclVisibility);
+  document.getElementById("declYes").addEventListener("change", updateDeclVisibility);
+
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+
+  var noticeCloseBtn = document.getElementById("deviceNoticeClose");
+  if(noticeCloseBtn){
+    noticeCloseBtn.addEventListener("click", function(){
+      document.getElementById("deviceNotice").style.display = "none";
+    });
+  }
+
+  // ============== Language switching ==============
+  function applyStaticI18n(){
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for(var ni=0; ni<nodes.length; ni++){
+      var node = nodes[ni];
+      var key = node.getAttribute("data-i18n");
+      var val = T(key);
+      if(val!==undefined) node.textContent = val;
+    }
+    document.documentElement.lang = state.lang;
+    document.getElementById("pageTitleTag").textContent = T("h1");
+    document.getElementById("langTh").className = state.lang==="th" ? "active" : "";
+    document.getElementById("langEn").className = state.lang==="en" ? "active" : "";
+  }
+
+  function setLanguage(lang){
+    state.lang = lang;
+    applyStaticI18n();
+    renderOverviewTable();
+    renderMasterTable();
+    renderEntries();
+    renderChecklist("certList", CERTS, "cert");
+    renderChecklist("advisorList", ADVISOR_ITEMS, "adv");
+    recalc();
+  }
+  document.getElementById("langTh").addEventListener("click", function(){ setLanguage("th"); });
+  document.getElementById("langEn").addEventListener("click", function(){ setLanguage("en"); });
+
+  // init
+  setLanguage("th");
+})();
+</script>
+</body>
+</html>
